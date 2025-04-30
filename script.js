@@ -45,7 +45,7 @@ function handleInput(key) {
   } else if (key === "←" && currentGuess.length > 0) {
     document.getElementById(`tile-${row}-${currentGuess.length - 1}`).textContent = "";
     currentGuess = currentGuess.slice(0, -1);
-  } else if (key === "ENTER" && currentGuess.length === 6) {
+  } else if (key === "⏎" && currentGuess.length === 6) {
     updateTiles(currentGuess);
     currentGuess = "";
   }
@@ -55,15 +55,15 @@ function createKeyboard() {
   const keys = [
     "QWERTYUIOP",
     "ASDFGHJKL",
-    "←ZXCVBNMENTER"
+    "←ZXCVBNM⏎"
   ];
   keys.forEach(rowKeys => {
     const rowDiv = document.createElement("div");
     for (let k of rowKeys) {
       const btn = document.createElement("button");
-      btn.textContent = k === "←" ? "⌫" : k === "ENTER" ? "⏎" : k;
+      btn.textContent = k;
       btn.className = "key";
-      btn.onclick = () => handleInput(k === "⌫" ? "←" : k === "⏎" ? "ENTER" : k);
+      btn.onclick = () => handleInput(k);
       rowDiv.appendChild(btn);
     }
     keyboard.appendChild(rowDiv);
@@ -71,7 +71,7 @@ function createKeyboard() {
 }
 
 document.addEventListener("keydown", (e) => {
-  handleInput(e.key.toUpperCase());
+  handleInput(e.key.toUpperCase() === "ENTER" ? "⏎" : e.key.toUpperCase() === "BACKSPACE" ? "←" : e.key.toUpperCase());
 });
 
 createRow();
